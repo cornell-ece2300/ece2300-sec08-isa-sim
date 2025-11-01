@@ -66,9 +66,12 @@ def main():
   with open( opts.asm_file, 'r' ) as f:
     file_content = f.read()
     sparse_mem_image = assemble(file_content)
-    text = sparse_mem_image.get_section(".text").data
-    data = sparse_mem_image.get_section(".data").data
-    mem_image = text + data
+    mem_image = sparse_mem_image.get_section(".text").data
+    try:
+      data = sparse_mem_image.get_section(".data").data
+      mem_image = mem_image + data
+    except:
+      pass
 
   asm_strs = []
   for i in range( 0, len(mem_image), 4 ):

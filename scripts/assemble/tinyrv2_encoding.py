@@ -717,6 +717,7 @@ def assemble( asm_code ):
       procs2mngrs_bytes.append( bytearray() )
       procs2mngrs_bytes[i][:] = proc2mngr_bytes
 
+  found_data_section = False
   for line in asm_list:
     asm_list_idx += 1
     line = line.partition('#')[0]
@@ -726,6 +727,7 @@ def assemble( asm_code ):
       continue
 
     if line.startswith(".data"):
+      found_data_section = True
       break
 
     else:
@@ -816,9 +818,10 @@ def assemble( asm_code ):
   # text_bytes.extend(struct.pack("<I",bits.uint()))
   # addr += 4
 
-  for i in range(addr,0x100,4):
-    text_bytes.extend(struct.pack("<I",0))
-  addr = 0x100
+  if found_data_section:
+    for i in range(addr,0x100,4):
+      text_bytes.extend(struct.pack("<I",0))
+      addr = 0x100
 
   # Assemble data section
 
