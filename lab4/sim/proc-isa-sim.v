@@ -232,11 +232,11 @@ module Top();
           else if ( i == 1 )
             $write("           .------------.");
           else if ( i == 2 )
-            $write("0x00001ffc | 0x%x |", proc.M[127] );
+            $write("0x000001fc | 0x%x |", proc.M[127] );
           else if ( i == 3 )
             $write("   ....    |    ....    |");
           else if ( i <= 16 )
-            $write("0x%x | 0x%x |", 'hb0-(i-4)*4, proc.M[('hb0-(i-4)*4)>>2] );
+            $write("0x%x | 0x%x |", 'h130-(i-4)*4, proc.M[('h130-(i-4)*4)>>2] );
           else if ( i == 17 )
             $write("   ....    |    ....    |");
           else if ( i <= 33 )
@@ -256,7 +256,7 @@ module Top();
         if ( c == "r" )
           tui = 0;
 
-        for ( int i = 0; i < 36; i++ ) begin
+        for ( int i = 0; i < 35; i++ ) begin
           $write("\x1b[A");
         end
 

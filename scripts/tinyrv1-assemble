@@ -65,11 +65,14 @@ def main():
 
   with open( opts.asm_file, 'r' ) as f:
     file_content = f.read()
-    data = assemble(file_content).get_section(".text").data
+    sparse_mem_image = assemble(file_content)
+    text = sparse_mem_image.get_section(".text").data
+    data = sparse_mem_image.get_section(".data").data
+    mem_image = text + data
 
   asm_strs = []
-  for i in range( 0, len(data), 4 ):
-    word_as_bytes = data[i:i+4]
+  for i in range( 0, len(mem_image), 4 ):
+    word_as_bytes = mem_image[i:i+4]
     word_as_int = int.from_bytes( word_as_bytes, 'little' )
     word_as_str = f"{word_as_int:032b}"
     asm_strs.append('_'.join(word_as_str[j:j+8] for j in range(0, 32, 8)))

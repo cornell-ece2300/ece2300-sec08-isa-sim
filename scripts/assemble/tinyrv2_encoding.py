@@ -725,17 +725,8 @@ def assemble( asm_code ):
     if line == "":
       continue
 
-    if line.startswith(".offset"):
-      (cmd,sep,addr_str) = line.partition(' ')
-      new_addr = int(addr_str,0)
-      for i in range(addr,new_addr,4):
-        text_bytes.extend(struct.pack("<I",0))
-      addr = new_addr
-
-    elif line.startswith(".word"):
-      (cmd,sep,value) = line.partition(' ')
-      text_bytes.extend(struct.pack("<I",int(value,0)))
-      addr += 4
+    if line.startswith(".data"):
+      break
 
     else:
       if ':' not in line:
@@ -825,6 +816,10 @@ def assemble( asm_code ):
   # text_bytes.extend(struct.pack("<I",bits.uint()))
   # addr += 4
 
+  for i in range(addr,0x100,4):
+    text_bytes.extend(struct.pack("<I",0))
+  addr = 0x100
+
   # Assemble data section
 
   data_bytes = bytearray()
@@ -857,9 +852,9 @@ def assemble( asm_code ):
   # Construct the corresponding section objects
 
   text_section = \
-    SparseMemoryImage.Section( ".text", 0x0000, text_bytes )
+    SparseMemoryImage.Section( ".text", 0x000, text_bytes )
 
-  data_section = SparseMemoryImage.Section( ".data", 0x2000, data_bytes )
+  data_section = SparseMemoryImage.Section( ".data", 0x100, data_bytes )
 
   # Build a sparse memory image
 
