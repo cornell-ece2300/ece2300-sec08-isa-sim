@@ -256,7 +256,7 @@ module Top();
         if ( c == "r" )
           tui = 0;
 
-        for ( int i = 0; i < 35; i++ ) begin
+        for ( int i = 0; i < 36; i++ ) begin
           $write("\x1b[A");
         end
 
